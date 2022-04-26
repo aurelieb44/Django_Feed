@@ -12,7 +12,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['first_name','last_name','email','dob','bio']
-        labels = {'first_name':'First Name',
+        labels = {'first_name':'First Name', # the way it is displayed
                     'last_name':'Last Name',
                     'email':'Email',
                     'dob':'Date of Birth',
