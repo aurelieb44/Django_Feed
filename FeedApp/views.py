@@ -57,8 +57,35 @@ def myfeed(request):
     context = {'posts': posts, 'zipped_list': zipped_list}
     return render(request, 'FeedApp/myfeed.html', context)
 
+@login_required 
+def new_post(request):
+    # process the form based on whether get or post request
+    if request.method != 'POST':
+        form = PostForm() # load the post as a blank form
+    else:
+        form = PostForm(request.POST, request.FILES) 
+        # getting everything from the form that is on the website, which is coming through this post request
+        # request.FILES to get the image that come with the post
+        if form.is_valid():
+            new_post = form.save(commit=False) # attach the username to it before we save it # create an instance, we save it, but we don't write it to the database yet
+            new_post.username = request.user
+            new_post.save()
+            return redirect('FeedApp:myfeed') # keep it at the same location so they can see their post
+    context = {'form': form}
+    return render(request, 'FeedApp/new_post.html', context) 
 
+@login_required 
+def comments(request, post_id): # want to see if someone has clicked on the comment button 
+    # we are not using a form 
+    # alternate way to get the information into the database, process it manually rather than having python to process it through a form
+    if request.method == 'POST' and request.POST.get('btn1'): # check if request method is post and if submit button was clicked
+    # the second part of and will result to true or false
+    # by naming the elements, we can get the corresponding value
+        comment = request.POST.get("comment") # getting whatever text is in that box
+        Comment.objects.create(post_id=post_id, username=request.user, text=comment, date_added=date.today()) # create a new row in the comment table
+    
+    comments = Comment.objects.filter(post=post_id)
+    post = Post.objects.get(id=post_id) # refresh the page: get the comment from the database to display on the screen #Comment is the model
+    context = {'post':post, 'comments':comments}
 
-
-
-
+    return render(request, 'FeedApp/comments.html', context)
