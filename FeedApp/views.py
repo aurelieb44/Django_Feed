@@ -49,6 +49,7 @@ def myfeed(request):
     for p in posts:
         c_count = Comment.objects.filter(post=p).count() # number of comments linked to this post
         l_count = Like.objects.filter(post=p).count()
+        print(l_count)
         comment_count_list.append(c_count)
         like_count_list.append(l_count)
     # pass that information to context by zipping
@@ -78,7 +79,9 @@ def new_post(request):
 def friendsfeed(request):
     comment_count_list = []
     like_count_list = []
-    posts = Post.objects.filter(username=request.user).order_by('-date_posted') 
+    friends = Profile.objects.filter(user=request.user).values('friends')
+    #posts = Post.objects.filter(username=request.user).order_by('-date_posted') 
+    posts = Post.objects.filter(username__in=friends).order_by('-date_posted') 
     # grab all the posts that belong to a certain user # descending order by date
     for p in posts:
         c_count = Comment.objects.filter(post=p).count() # number of comments linked to this post
@@ -91,15 +94,15 @@ def friendsfeed(request):
     if request.method == 'POST' and request.POST.get("like"): # check if the like button is clicked
         post_to_like = request.POST.get("like")
         print(post_to_like)
-        like_already_exists == Like.objects.filter(post_id=post_to_like, username=request.user) 
+        like_already_exists = Like.objects.filter(post_id=post_to_like, username=request.user) 
         # don't want the person to like more than once
-        if not like_already_exists():
+        if not like_already_exists.exists(): # exists is the name of the function that checks for it
             Like.objects.create(post_id=post_to_like, username=request.user)
-            return redirect("FeedApp:friendsFeed")
+            return redirect("FeedApp:friendsfeed")
 
     
     context = {'posts': posts, 'zipped_list': zipped_list}
-    return render(request, 'FeedApp/myfeed.html', context)
+    return render(request, 'FeedApp/friendsfeed.html', context)
 
 @login_required 
 def comments(request, post_id): # want to see if someone has clicked on the comment button 
@@ -157,7 +160,7 @@ def friends(request):
 
     # this is to process all received requests
     if request.method == 'POST' and request.POST.get("receive_requests"):
-        senders = request.POST.getlist("friend_requests") # list of senders
+        senders = request.POST.getlist("receive_requests") # list of senders
         for sender in senders:
             # update the relationship model for the sender to status 'accepted'
             Relationship.objects.filter(id=sender).update(status='accepted')
