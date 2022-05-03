@@ -7,6 +7,7 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'), # build our profile # form to add first name, last name...
     path('myfeed', views.myfeed, name='myfeed'),
     path('new_post/', views.new_post, name='new_post'),
-    path('comments/<int:post_id>/', views.comments, name='comments'),]
+    path('comments/<int:post_id>/', views.comments, name='comments'),
+    path('friends/', views.friends, name='friends'),]
 
     
