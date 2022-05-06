@@ -21,10 +21,10 @@
             <td>{{p.date_posted}}</td>
             <td>
                 <button type="submit" name="like" value={{p.id}} style="background-color: transparent;border: none;">
-                    Likes: &nbsp {{l}} &nbsp
+                    Likes: &nbsp {{l}} &nbsp&nbsp&nbsp
                 </button>
             </td>
-            <td>Comments: &nbsp <a href="{% url 'FeedApp:comments' p.id %}">{{c}}</a> &nbsp</td>
+            <td>Comments: &nbsp <a href="{% url 'FeedApp:comments' p.id %}">{{c}}</a> &nbsp&nbsp&nbsp</td>
         </tr>
         </tr>
         {% endfor %}
