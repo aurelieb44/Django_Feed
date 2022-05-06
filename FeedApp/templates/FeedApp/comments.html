@@ -20,7 +20,7 @@
     {% csrf_token %}
     {% for c in comments %}
     <li>
-        <p>{{c.text}} &nbsp -- &nbsp {{c.username}}</p>
+        <p>&nbsp&nbsp{{c.text}} &nbsp -- &nbsp {{c.username}}</p>
     </li>
     {% empty %}
     <li>There are no comments for this post.</li>

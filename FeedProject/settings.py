@@ -34,8 +34,8 @@ INSTALLED_APPS = [
     #MyApps
     'FeedApp',
     'users',
-     #third party apps
-    'bootstrap4',
+     #third party apps # apps created by other developers
+    'bootstrap4', # styling
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
