@@ -18,7 +18,7 @@ class Profile(models.Model): # a user profile # when a new user is created
 
 
     def __str__(self):
-        return f"{self.user.username}" # returns the username from the user
+        return f"{self.user.username}" # returns the username from the user # Johnny Bhojwani, not profb.
 
 STATUS_CHOICES = (
     ('sent','sent'),
@@ -29,7 +29,7 @@ class Relationship(models.Model): # establish relationship between two profiles
     # sender sends a friend request, the receiver is someone else in the network that we want to be friends with
     sender = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='sender') # FK to the profile class
     receiver = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='receiver') # FK to the profile class
-    status = models.CharField(max_length=8, choices=STATUS_CHOICES, default="send") # when we first create the relationship, one the request is accepted, the status changes to accepted
+    status = models.CharField(max_length=8, choices=STATUS_CHOICES, default="sent") # when we first create the relationship, one the request is accepted, the status changes to accepted
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now_add=True)
     
@@ -37,7 +37,9 @@ class Relationship(models.Model): # establish relationship between two profiles
 class Post(models.Model):
     description = models.CharField(max_length=255, blank=True)
     username = models.ForeignKey(User, on_delete=models.CASCADE) # FK to the user entity
-    image = models.ImageField(upload_to='images',blank=True) # images uploaded by users will be saved in this folder # not required to have an image
+    image = models.ImageField(upload_to='images',blank=True) 
+    # images uploaded by users will be saved in this folder # blank=true because not required to have an image 
+    # # only works if pillow installed
     date_posted = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

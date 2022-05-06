@@ -28,4 +28,4 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT) 
-                          # assigning a medial url in a media root, we may not need it because files that users upload are stored in the folder called images
+# assigning a medial url in a media root, we may not need it because files that users upload are stored in the folder called images
